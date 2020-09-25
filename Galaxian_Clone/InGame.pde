@@ -35,16 +35,17 @@ class InGame extends GUI {
     player2HS = 0;
     player1.setDefaultKeyMapping();
     l1 = new Laser(128, 211);
-    ss1 = new SpaceShip(112, 208, player1, l1);
+    ss1 = new SpaceShip(this, 112, 208, player1, l1);
     if(players == 2) {
-      player1.setKeyMapping('A', 'W', 'D', 'S', 'F', 'G', 'R', 'T');
-      player2.setKeyMapping(LEFT, UP, RIGHT, DOWN, ALT, CONTROL, SHIFT, ENTER);
+      player1.name = onlineName;
+      // TODO: change to match starts
       ss1.x = 96;
       l1.x = 112;
       l2 = new Laser(145, 211);
-      ss2 = new SpaceShip(129, 208, player2, l2);
+      ss2 = new SpaceShip(this, 129, 208, player2, l2);
     }
     else {
+      player1.name = "P1";
       ss2 = null;
       l2 = null;
     }
@@ -104,7 +105,9 @@ class InGame extends GUI {
       stageCounter = 180;
       stageState = 1;
       player1.clear();
-      player2.clear();
+      if(player2 != null) {
+        player2.clear();
+      }
     }
   }
   private void state1() {
@@ -183,7 +186,7 @@ class InGame extends GUI {
         //reload counter and create new enemies, change states
         stageCounter = 180;
         state = 0;
-        player1.setDefaultKeyMapping();
+        saveData();
       }
     }
     else {

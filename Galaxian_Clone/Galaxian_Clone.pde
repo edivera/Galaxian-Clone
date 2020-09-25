@@ -1,3 +1,5 @@
+import processing.net.*;
+
 /**********************************/
 /* Simple Colors */
 final color white  = #FFFFFF;
@@ -21,6 +23,8 @@ Controller player2;
 GUI[] guiSM;  //state machine, made out of guis
 InGame game;  //in game state
 MainMenu mm;  //in main menu state
+MatchMakingMenu mmm;  //match with another player
+KeyboardMenu km;  //enter your name
 int state=0;  //state = 0 first
 
 //stats
@@ -28,6 +32,10 @@ int highScore;
 int player1HS;
 int player2HS;
 
+//netplay
+String onlineName;
+boolean online;  //essentially multiplayer
+Client conn;
 
 void setup() {
   size(960, 960);
@@ -41,13 +49,17 @@ void setup() {
   stars[0].spread(stars);
   
   //controllers
-  player1 = new Controller();
-  player2 = new Controller();
+  player1 = new Controller(1);
+  
+  //load persistent data
+  loadPersistentData();
   
   //game
   game = new InGame();
   mm = new MainMenu(game);
-  guiSM = new GUI[]{mm, game};
+  mmm = new MatchMakingMenu(game);
+  km = new KeyboardMenu();
+  guiSM = new GUI[]{mm, game, mmm, km};
   
   //stats
   highScore = 0;
@@ -67,10 +79,14 @@ void draw() {
 
 void keyPressed() {
   player1.toggleKey(keyCode, true);
-  player2.toggleKey(keyCode, true);
+  if(online) {
+    conn.write("" + keyCode + " " + true);
+  }
 }
 
 void keyReleased() {
   player1.toggleKey(keyCode, false);
-  player2.toggleKey(keyCode, false);
+  if(online) {
+    conn.write("" + keyCode + " " + false);
+  }
 }
