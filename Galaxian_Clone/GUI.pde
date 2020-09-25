@@ -27,7 +27,32 @@ class GUI {
     x = saveX;
     y = saveY;
   }
+  final public void printSpriteText(String message, float centerX, float centerY) {
+    //save x and y
+    int saveX = x;
+    int saveY = y;
+    
+    float pixelW = 1.0 * width / 256;
+    float pixelH = 1.0 * height / 240;
+    float startX = centerX - (message.length() / 2.0) * (8 * pixelW);
+    float startY = centerY - 4 * pixelH;
+    float realX = startX;
+    float realY = startY;
+    
+    for(byte b : message.getBytes()) {
+      char c = (char)b;
+      printer(c, realX, realY);
+      realX += 8 * pixelW;
+    }
+    
+    //restore x and y
+    x = saveX;
+    y = saveY;
+  }
   final private void printG(String message, float... variables) {
+    if(message == null) {
+      return;
+    }
     //parse and print
     int argument = 0;  //index for the arguments
     int length = message.length();
@@ -37,7 +62,7 @@ class GUI {
         printVariable(message.charAt(i), variables[argument++]);
       }
       else {
-        x = (printer(message.charAt(i))) ? x + 1: x;
+        x = (indexedPrinter(message.charAt(i))) ? x + 1: x;
       }
     }
   }
@@ -58,12 +83,17 @@ class GUI {
     }
     printG(toPrint);
   }
-  final private boolean printer(char c) {
-    //pixel calculations
+  final private boolean indexedPrinter(char c) {
     float pixelW = 1.0 * width / 256;
     float pixelH = 1.0 * height / 240;
     float realX = x * 8 * pixelW + pixelW;  //index * charWidth * pixelWidth + spaceOffset
     float realY = y * 8 * pixelH + pixelH;  //index * charHeight * pixelHeight + spaceOffset
+    return printer(c, realX, realY);
+  }
+  final private boolean printer(char c, float realX, float realY) {
+    //pixel calculations
+    float pixelW = 1.0 * width / 256;
+    float pixelH = 1.0 * height / 240;
     if(x >= 32) {
       println("*** Warning: 32 horizontal characters exceeded ***");
     }
