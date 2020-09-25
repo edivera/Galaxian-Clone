@@ -2,9 +2,11 @@ class SpaceShip extends AnimatedObject {
   
   Controller player;
   Laser laser;
+  GUI context;
   
   
-  SpaceShip(int _x, int _y, Controller _player, Laser _laser) {
+  SpaceShip(GUI _context, int _x, int _y, Controller _player, Laser _laser) {
+    context = _context;
     x = _x;
     y = _y;
     player = _player;
@@ -36,6 +38,14 @@ class SpaceShip extends AnimatedObject {
       laser.reset(x + 16, y + 3);
       currentFrame = 0;
     }
+  }
+  
+  void display() {
+    float pixelW = 1.0 * width / 256;
+    float pixelH = 1.0 * height / 240;
+    super.display();
+    context.setColor(player.controllerNumber == 1 ? blue : red);
+    context.printSpriteText(player.name, (x + w / 2 + 2) * pixelW , (y + h - 4) * pixelH);
   }
   
 }
