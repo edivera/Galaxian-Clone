@@ -5,7 +5,7 @@ abstract class AnimatedObject {
   int x, y, w, h;    //in pixels
   
   abstract void step();
-  final void display() {
+  void display() {
     if(currentFrame >= frames.length) {
       return;
     }
