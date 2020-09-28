@@ -10,6 +10,7 @@ class InGame extends GUI {
   boolean gameOver, stageClear;  //game over and stage clear flags
   boolean paused1, paused2;
   boolean pushed1, pushed2;
+  boolean player1OnTheLeft;
   
   
   InGame() {
@@ -26,6 +27,7 @@ class InGame extends GUI {
     stageSprite.h = stageSprite.frames[0].height;
     livesSprite.currentFrame = 0;
     stageSprite.currentFrame = 0;
+    player1OnTheLeft = true;
   }
   
   
@@ -34,17 +36,26 @@ class InGame extends GUI {
     player1HS = 0;
     player2HS = 0;
     player1.setDefaultKeyMapping();
-    l1 = new Laser(128, 211);
-    ss1 = new SpaceShip(this, 112, 208, player1, l1);
     if(players == 2) {
+      stageState = 3;
       player1.name = onlineName;
-      // TODO: change to match starts
-      ss1.x = 96;
-      l1.x = 112;
-      l2 = new Laser(145, 211);
-      ss2 = new SpaceShip(this, 129, 208, player2, l2);
+      if(player1OnTheLeft) {
+        l1 = new Laser(112, 211);
+        ss1 = new SpaceShip(this, 96, 208, player1, l1);
+        l2 = new Laser(145, 211);
+        ss2 = new SpaceShip(this, 129, 208, player2, l2);
+      }
+      else {
+        l2 = new Laser(112, 211);
+        ss2 = new SpaceShip(this, 96, 208, player2, l2);
+        l1 = new Laser(145, 211);
+        ss1 = new SpaceShip(this, 129, 208, player1, l1);
+      }
     }
     else {
+      stageState = 0;
+      l1 = new Laser(128, 211);
+      ss1 = new SpaceShip(this, 112, 208, player1, l1);
       player1.name = "P1";
       ss2 = null;
       l2 = null;
@@ -56,7 +67,7 @@ class InGame extends GUI {
     enemies = new EnemyCollection((players == 1) ? 3 + diff : 3 + 2 * diff);
     paused1 = false; pushed1 = false;
     paused2 = false; pushed2 = false;
-    stageState = 0; stageCounter = 180;
+    stageCounter = 180;
     gameOver = false; stageClear = false;
   }
   void step() {

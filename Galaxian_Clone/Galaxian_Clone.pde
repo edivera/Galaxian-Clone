@@ -50,6 +50,7 @@ void setup() {
   
   //controllers
   player1 = new Controller(1);
+  player2 = new Controller(2);
   
   //load persistent data
   loadPersistentData();
@@ -80,13 +81,13 @@ void draw() {
 void keyPressed() {
   player1.toggleKey(keyCode, true);
   if(online) {
-    p2Conn.write("" + keyCode + " " + true);
+    p2Conn.write("PRESS " + keyCode + " " + true);
   }
 }
 
 void keyReleased() {
   player1.toggleKey(keyCode, false);
   if(online) {
-    p2Conn.write("" + keyCode + " " + false);
+    p2Conn.write("RELEASE " + keyCode + " " + false);
   }
 }
