@@ -42,8 +42,8 @@ class MatchMakingMenu extends GUI {
   }
   
   void pollForNewMatch() {
-    //Client server = new Client(context, SERVER_IP, SERVER_PORT);
-    //p2Conn = synack(server);
+    Client server = new Client(context, SERVER_IP, SERVER_PORT);
+    p2Conn = synack(server);
   }
   
   Client synack(Client server) {
