@@ -35,7 +35,7 @@ int player2HS;
 //netplay
 String onlineName;
 boolean online;  //essentially multiplayer
-Client conn;
+Client p2Conn;
 
 void setup() {
   size(960, 960);
@@ -57,7 +57,7 @@ void setup() {
   //game
   game = new InGame();
   mm = new MainMenu(game);
-  mmm = new MatchMakingMenu(game);
+  mmm = new MatchMakingMenu(this, game);
   km = new KeyboardMenu();
   guiSM = new GUI[]{mm, game, mmm, km};
   
