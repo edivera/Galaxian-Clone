@@ -16,6 +16,7 @@ class MatchMakingMenu extends GUI {
   }
   
   Client synack(Client server) {
+    while(server.available() == 0);
     byte[] bytes = server.readBytes();
     int delegatePort = Integer.parseInt(new String(bytes).trim());
     server.write(delegatePort);

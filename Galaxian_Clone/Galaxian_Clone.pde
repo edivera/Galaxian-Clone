@@ -80,13 +80,13 @@ void draw() {
 void keyPressed() {
   player1.toggleKey(keyCode, true);
   if(online) {
-    conn.write("" + keyCode + " " + true);
+    p2Conn.write("" + keyCode + " " + true);
   }
 }
 
 void keyReleased() {
   player1.toggleKey(keyCode, false);
   if(online) {
-    conn.write("" + keyCode + " " + false);
+    p2Conn.write("" + keyCode + " " + false);
   }
 }
